@@ -1,12 +1,12 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="توجيه روابط تطبيقات Android إلى تطبيق Droidify">
+    <meta name="description" content="ØªÙˆØ¬ÙŠÙ‡ Ø±ÙˆØ§Ø¨Ø· ØªØ·Ø¨ÙŠÙ‚Ø§Øª Android Ø¥Ù„Ù‰ ØªØ·Ø¨ÙŠÙ‚ Droidify">
     <meta name="robots" content="noindex, nofollow">
-    <title>توجيه إلى التطبيق | Droidify Redirector</title>
+    <title>ØªÙˆØ¬ÙŠÙ‡ Ø¥Ù„Ù‰ Ø§Ù„ØªØ·Ø¨ÙŠÙ‚ | Droidify Redirector</title>
     <style>
         /* Reset and Base Styles */
         * {
@@ -178,31 +178,31 @@
 </head>
 <body>
     <div class="container">
-        <div class="icon">📱</div>
+        <div class="icon">ðŸ“±</div>
         <div id="loading">
-            <h1>جاري التوجيه...</h1>
+            <h1>Ø¬Ø§Ø±ÙŠ Ø§Ù„ØªÙˆØ¬ÙŠÙ‡...</h1>
             <h1 class="en">Redirecting...</h1>
             <div class="spinner"></div>
-            <p class="message">يرجى الانتظار، جاري فتح التطبيق</p>
+            <p class="message">ÙŠØ±Ø¬Ù‰ Ø§Ù„Ø§Ù†ØªØ¸Ø§Ø±ØŒ Ø¬Ø§Ø±ÙŠ ÙØªØ­ Ø§Ù„ØªØ·Ø¨ÙŠÙ‚</p>
             <p class="message en">Please wait, opening the app</p>
         </div>
 
         <div id="error" class="hidden">
-            <h1 style="color: #c53030;">خطأ</h1>
+            <h1 style="color: #c53030;">Ø®Ø·Ø£</h1>
             <h1 class="en" style="color: #c53030;">Error</h1>
             <div class="error">
-                <p id="errorMessage">رابط غير صحيح</p>
+                <p id="errorMessage">Ø±Ø§Ø¨Ø· ØºÙŠØ± ØµØ­ÙŠØ­</p>
                 <p id="errorMessageEn" class="en">Invalid link</p>
             </div>
         </div>
 
         <div id="fallback" class="hidden">
-            <h1>التطبيق غير متاح</h1>
+            <h1>Ø§Ù„ØªØ·Ø¨ÙŠÙ‚ ØºÙŠØ± Ù…ØªØ§Ø­</h1>
             <h1 class="en">App Not Available</h1>
-            <p class="message">لم يتم فتح التطبيق تلقائياً</p>
+            <p class="message">Ù„Ù… ÙŠØªÙ… ÙØªØ­ Ø§Ù„ØªØ·Ø¨ÙŠÙ‚ ØªÙ„Ù‚Ø§Ø¦ÙŠØ§Ù‹</p>
             <p class="message en">The app did not open automatically</p>
             <a id="playStoreLink" href="#" class="button" target="_blank">
-                فتح في Google Play
+                ÙØªØ­ ÙÙŠ Google Play
             </a>
         </div>
     </div>
@@ -211,7 +211,7 @@
         (function() {
             'use strict';
 
-            // العناصر DOM
+            // Ø§Ù„Ø¹Ù†Ø§ØµØ± DOM
             const loadingDiv = document.getElementById('loading');
             const errorDiv = document.getElementById('error');
             const fallbackDiv = document.getElementById('fallback');
@@ -220,7 +220,7 @@
             const playStoreLink = document.getElementById('playStoreLink');
 
             /**
-             * تنظيف المدخلات لمنع XSS
+             * ØªÙ†Ø¸ÙŠÙ Ø§Ù„Ù…Ø¯Ø®Ù„Ø§Øª Ù„Ù…Ù†Ø¹ XSS
              */
             function sanitizeInput(input) {
                 if (!input) return '';
@@ -228,16 +228,16 @@
             }
 
             /**
-             * التحقق من صحة package name
+             * Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† ØµØ­Ø© package name
              */
             function isValidPackageName(packageId) {
                 if (!packageId) return false;
-                // Package name يجب أن يحتوي على dots و أحرف/أرقام فقط
+                // Package name ÙŠØ¬Ø¨ Ø£Ù† ÙŠØ­ØªÙˆÙŠ Ø¹Ù„Ù‰ dots Ùˆ Ø£Ø­Ø±Ù/Ø£Ø±Ù‚Ø§Ù… ÙÙ‚Ø·
                 return /^[a-z][a-z0-9_]*(\.[a-z][a-z0-9_]*)+$/.test(packageId);
             }
 
             /**
-             * التحقق من صحة URL
+             * Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† ØµØ­Ø© URL
              */
             function isValidUrl(url) {
                 try {
@@ -249,7 +249,7 @@
             }
 
             /**
-             * إخفاء جميع العناصر
+             * Ø¥Ø®ÙØ§Ø¡ Ø¬Ù…ÙŠØ¹ Ø§Ù„Ø¹Ù†Ø§ØµØ±
              */
             function hideAll() {
                 loadingDiv.classList.add('hidden');
@@ -258,7 +258,7 @@
             }
 
             /**
-             * عرض رسالة الخطأ
+             * Ø¹Ø±Ø¶ Ø±Ø³Ø§Ù„Ø© Ø§Ù„Ø®Ø·Ø£
              */
             function showError(message, messageEn) {
                 hideAll();
@@ -268,103 +268,109 @@
             }
 
             /**
-             * عرض رابط Google Play Store
+             * Ø¹Ø±Ø¶ Ø±Ø§Ø¨Ø· Google Play Store
              */
-            function showPlayStoreFallback(packageId) {
+            function showPlayStoreFallback(packageId, repoAddress) {
                 hideAll();
-                const playStoreUrl = 'https://play.google.com/store/apps/details?id=' + encodeURIComponent(packageId);
-                playStoreLink.href = playStoreUrl;
-                playStoreLink.textContent = 'فتح في Google Play';
-                playStoreLink.innerHTML = 'فتح في Google Play<br><span style="font-size: 12px; opacity: 0.8;">Open in Google Play</span>';
+                let fallbackUrl = 'https://play.google.com/store/apps/details?id=' + encodeURIComponent(packageId);
+                let fallbackLabel = '??? ?? Google Play<br><span style="font-size: 12px; opacity: 0.8;">Open in Google Play</span>';
+
+                if (repoAddress) {
+                    fallbackUrl = repoAddress;
+                    fallbackLabel = '??? ?????? ????????<br><span style="font-size: 12px; opacity: 0.8;">Open repository source</span>';
+                }
+
+                playStoreLink.href = fallbackUrl;
+                playStoreLink.innerHTML = fallbackLabel;
                 fallbackDiv.classList.remove('hidden');
             }
 
             /**
-             * الوظيفة الرئيسية
+             * Ø§Ù„ÙˆØ¸ÙŠÙØ© Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠØ©
              */
             function redirect() {
                 try {
-                    // استخراج المعاملات من URL
+                    // Ø§Ø³ØªØ®Ø±Ø§Ø¬ Ø§Ù„Ù…Ø¹Ø§Ù…Ù„Ø§Øª Ù…Ù† URL
                     const urlParams = new URLSearchParams(window.location.search);
                     const packageId = urlParams.get('id');
                     const repoAddress = urlParams.get('repo_address');
 
-                    // التحقق من وجود packageId (مطلوب)
+                    // Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† ÙˆØ¬ÙˆØ¯ packageId (Ù…Ø·Ù„ÙˆØ¨)
                     if (!packageId) {
                         showError(
-                            'خطأ: رابط غير صحيح. يجب تحديد package name.',
+                            'Ø®Ø·Ø£: Ø±Ø§Ø¨Ø· ØºÙŠØ± ØµØ­ÙŠØ­. ÙŠØ¬Ø¨ ØªØ­Ø¯ÙŠØ¯ package name.',
                             'Error: Invalid link. Package name must be specified.'
                         );
                         return;
                     }
 
-                    // تنظيف المدخلات
+                    // ØªÙ†Ø¸ÙŠÙ Ø§Ù„Ù…Ø¯Ø®Ù„Ø§Øª
                     const cleanPackageId = sanitizeInput(packageId);
                     const cleanRepoAddress = repoAddress ? sanitizeInput(repoAddress) : null;
 
-                    // التحقق من صحة package name
+                    // Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† ØµØ­Ø© package name
                     if (!isValidPackageName(cleanPackageId)) {
                         showError(
-                            'خطأ: package name غير صحيح.',
+                            'Ø®Ø·Ø£: package name ØºÙŠØ± ØµØ­ÙŠØ­.',
                             'Error: Invalid package name format.'
                         );
                         return;
                     }
 
-                    // التحقق من صحة repo_address إذا كان موجوداً
+                    // Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† ØµØ­Ø© repo_address Ø¥Ø°Ø§ ÙƒØ§Ù† Ù…ÙˆØ¬ÙˆØ¯Ø§Ù‹
                     if (cleanRepoAddress && !isValidUrl(cleanRepoAddress)) {
                         showError(
-                            'خطأ: عنوان المستودع غير صحيح.',
+                            'Ø®Ø·Ø£: Ø¹Ù†ÙˆØ§Ù† Ø§Ù„Ù…Ø³ØªÙˆØ¯Ø¹ ØºÙŠØ± ØµØ­ÙŠØ­.',
                             'Error: Invalid repository address.'
                         );
                         return;
                     }
 
-                    // إنشاء Deep Link
+                    // Ø¥Ù†Ø´Ø§Ø¡ Deep Link
                     let deepLink = 'fdroid.app://' + cleanPackageId;
                     if (cleanRepoAddress) {
                         deepLink += '?repo_address=' + encodeURIComponent(cleanRepoAddress);
                     }
 
-                    // تسجيل في Console (للتطوير)
+                    // ØªØ³Ø¬ÙŠÙ„ ÙÙŠ Console (Ù„Ù„ØªØ·ÙˆÙŠØ±)
                     console.log('Deep Link:', deepLink);
                     console.log('Package ID:', cleanPackageId);
                     if (cleanRepoAddress) {
                         console.log('Repo Address:', cleanRepoAddress);
                     }
 
-                    // محاولة فتح التطبيق
-                    // نستخدم window.location.href للتحويل
+                    // Ù…Ø­Ø§ÙˆÙ„Ø© ÙØªØ­ Ø§Ù„ØªØ·Ø¨ÙŠÙ‚
+                    // Ù†Ø³ØªØ®Ø¯Ù… window.location.href Ù„Ù„ØªØ­ÙˆÙŠÙ„
                     window.location.href = deepLink;
 
-                    // Fallback: بعد 2 ثانية، إذا لم يتم فتح التطبيق، عرض رابط Google Play
+                    // Fallback: Ø¨Ø¹Ø¯ 2 Ø«Ø§Ù†ÙŠØ©ØŒ Ø¥Ø°Ø§ Ù„Ù… ÙŠØªÙ… ÙØªØ­ Ø§Ù„ØªØ·Ø¨ÙŠÙ‚ØŒ Ø¹Ø±Ø¶ Ø±Ø§Ø¨Ø· Google Play
                     let hasNavigated = false;
 
-                    // التحقق من رجوع المستخدم (في بعض المتصفحات)
+                    // Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† Ø±Ø¬ÙˆØ¹ Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… (ÙÙŠ Ø¨Ø¹Ø¶ Ø§Ù„Ù…ØªØµÙØ­Ø§Øª)
                     window.addEventListener('blur', function() {
                         hasNavigated = true;
                     });
 
-                    // بعد 2 ثانية، عرض رابط Google Play كبديل
+                    // Ø¨Ø¹Ø¯ 2 Ø«Ø§Ù†ÙŠØ©ØŒ Ø¹Ø±Ø¶ Ø±Ø§Ø¨Ø· Google Play ÙƒØ¨Ø¯ÙŠÙ„
                     setTimeout(function() {
                         if (!hasNavigated) {
-                            showPlayStoreFallback(cleanPackageId);
+                            showPlayStoreFallback(cleanPackageId, cleanRepoAddress);
                         }
                     }, 2000);
 
                 } catch (error) {
                     console.error('Error during redirect:', error);
                     showError(
-                        'حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى.',
+                        'Ø­Ø¯Ø« Ø®Ø·Ø£ ØºÙŠØ± Ù…ØªÙˆÙ‚Ø¹. ÙŠØ±Ø¬Ù‰ Ø§Ù„Ù…Ø­Ø§ÙˆÙ„Ø© Ù…Ø±Ø© Ø£Ø®Ø±Ù‰.',
                         'An unexpected error occurred. Please try again.'
                     );
                 }
             }
 
-            // تشغيل الوظيفة عند تحميل الصفحة
+            // ØªØ´ØºÙŠÙ„ Ø§Ù„ÙˆØ¸ÙŠÙØ© Ø¹Ù†Ø¯ ØªØ­Ù…ÙŠÙ„ Ø§Ù„ØµÙØ­Ø©
             window.addEventListener('DOMContentLoaded', redirect);
 
-            // دعم LTR للمتصفحات التي لا تدعم RTL بشكل جيد
+            // Ø¯Ø¹Ù… LTR Ù„Ù„Ù…ØªØµÙØ­Ø§Øª Ø§Ù„ØªÙŠ Ù„Ø§ ØªØ¯Ø¹Ù… RTL Ø¨Ø´ÙƒÙ„ Ø¬ÙŠØ¯
             if (navigator.language && !navigator.language.startsWith('ar')) {
                 document.documentElement.setAttribute('dir', 'ltr');
                 document.documentElement.setAttribute('lang', 'en');
