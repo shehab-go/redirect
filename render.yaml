@@ -2,7 +2,6 @@ services:
   - type: static
     name: redirect
     env: static
-    buildCommand: ""
-    staticPublishPath: app
+    publishPath: app
     branch: main
 
