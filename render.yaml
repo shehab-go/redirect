@@ -1,6 +1,6 @@
 services:
   - type: static
     name: redirect
-    publishPath: app
+    publishPath: .
     branch: main
 
