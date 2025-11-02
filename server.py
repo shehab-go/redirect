@@ -75,7 +75,6 @@ def main():
             print(f"\n[*] Test links (use your network IP from other devices):")
             print(f"    http://{local_ip}:{PORT}/app/?id=com.example.app")
             print(f"    http://{local_ip}:{PORT}/app/?id=com.example.app&repo_address=https://repo.example.com/repo")
-            print(f"    http://{local_ip}:{PORT}/app/?id=com.example.app&repo_address=https://repo.example.com/repo&repo_fingerprint=AA:BB:CC:DD")
             print(f"\n[*] Make sure:")
             print(f"    - Both devices are on the same WiFi/network")
             print(f"    - Firewall allows port {PORT}")
