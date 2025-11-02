@@ -1,0 +1,16 @@
+# robots.txt for Droidify Redirector
+# ملف robots.txt لـ Droidify Redirector
+
+# Allow all crawlers (optional - you can disallow if needed)
+# السماح لجميع العناكب (اختياري - يمكنك المنع إذا لزم الأمر)
+User-agent: *
+Allow: /
+
+# Disallow crawling of app directory (since it's a redirector)
+# منع فهرسة مجلد app (لأنه محول روابط)
+Disallow: /app/
+
+# Sitemap (update with your actual domain)
+# خريطة الموقع (حدّث مع النطاق الفعلي)
+# Sitemap: https://droidify.eu.org/sitemap.xml
+
