@@ -239,18 +239,26 @@
             /**
              * Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† ØµØ­Ø© URL
              */
-            function isValidUrl(url) {
-                try {
-                    new URL(url);
-                    return true;
-                } catch {
-                    return false;
-                }
-            }
-
-            /**
-             * Ø¥Ø®ÙØ§Ø¡ Ø¬Ù…ÙŠØ¹ Ø§Ù„Ø¹Ù†Ø§ØµØ±
-             */
+            function isValidUrl(url) {
+                try {
+                    new URL(url);
+                    return true;
+                } catch {
+                    return false;
+                }
+            }
+
+            /**
+             * Validate SHA-256 fingerprint format
+             */
+            function isValidFingerprint(fingerprint) {
+                if (!fingerprint) return false;
+                const normalized = fingerprint.trim().toUpperCase();
+                const colonPattern = /^([0-9A-F]{2}(:[0-9A-F]{2}){31})$/;
+                const compactPattern = /^[0-9A-F]{64}$/;
+                return colonPattern.test(normalized) || compactPattern.test(normalized);
+            }
+
             function hideAll() {
                 loadingDiv.classList.add('hidden');
                 errorDiv.classList.add('hidden');
@@ -290,75 +298,84 @@
              */
             function redirect() {
                 try {
-                    // Ø§Ø³ØªØ®Ø±Ø§Ø¬ Ø§Ù„Ù…Ø¹Ø§Ù…Ù„Ø§Øª Ù…Ù† URL
                     const urlParams = new URLSearchParams(window.location.search);
                     const packageId = urlParams.get('id');
                     const repoAddress = urlParams.get('repo_address');
+                    const repoFingerprint = urlParams.get('repo_fingerprint');
 
-                    // Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† ÙˆØ¬ÙˆØ¯ packageId (Ù…Ø·Ù„ÙˆØ¨)
                     if (!packageId) {
                         showError(
-                            'Ø®Ø·Ø£: Ø±Ø§Ø¨Ø· ØºÙŠØ± ØµØ­ÙŠØ­. ÙŠØ¬Ø¨ ØªØ­Ø¯ÙŠØ¯ package name.',
+                            'OrO?O?: O?OO"O? O?USO? O?O-USO-. USO?O" O?O-O_USO_ package name.',
                             'Error: Invalid link. Package name must be specified.'
                         );
                         return;
                     }
 
-                    // ØªÙ†Ø¸ÙŠÙ Ø§Ù„Ù…Ø¯Ø®Ù„Ø§Øª
                     const cleanPackageId = sanitizeInput(packageId);
                     const cleanRepoAddress = repoAddress ? sanitizeInput(repoAddress) : null;
+                    const cleanRepoFingerprint = repoFingerprint ? sanitizeInput(repoFingerprint) : null;
 
-                    // Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† ØµØ­Ø© package name
                     if (!isValidPackageName(cleanPackageId)) {
                         showError(
-                            'Ø®Ø·Ø£: package name ØºÙŠØ± ØµØ­ÙŠØ­.',
+                            'OrO?O?: package name O?USO? O?O-USO-.',
                             'Error: Invalid package name format.'
                         );
                         return;
                     }
 
-                    // Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† ØµØ­Ø© repo_address Ø¥Ø°Ø§ ÙƒØ§Ù† Ù…ÙˆØ¬ÙˆØ¯Ø§Ù‹
                     if (cleanRepoAddress && !isValidUrl(cleanRepoAddress)) {
                         showError(
-                            'Ø®Ø·Ø£: Ø¹Ù†ÙˆØ§Ù† Ø§Ù„Ù…Ø³ØªÙˆØ¯Ø¹ ØºÙŠØ± ØµØ­ÙŠØ­.',
+                            'OrO?O?: O1U+U^OU+ OU,U.O3O?U^O_O1 O?USO? O?O-USO-.',
                             'Error: Invalid repository address.'
                         );
                         return;
                     }
 
-                    // Ø¥Ù†Ø´Ø§Ø¡ Deep Link
-                    let deepLink = 'fdroid.app://' + cleanPackageId;
-                    if (cleanRepoAddress) {
-                        deepLink += '?repo_address=' + encodeURIComponent(cleanRepoAddress);
+                    if (cleanRepoFingerprint && !isValidFingerprint(cleanRepoFingerprint)) {
+                        showError(
+                            'Error: Invalid repository fingerprint.',
+                            'Error: Invalid repository fingerprint format.'
+                        );
+                        return;
                     }
 
-                    // ØªØ³Ø¬ÙŠÙ„ ÙÙŠ Console (Ù„Ù„ØªØ·ÙˆÙŠØ±)
+                    let deepLink = 'fdroid.app://' + cleanPackageId;
+                    const deepLinkParams = [];
+                    if (cleanRepoAddress) {
+                        deepLinkParams.push('repo_address=' + encodeURIComponent(cleanRepoAddress));
+                    }
+                    if (cleanRepoFingerprint) {
+                        deepLinkParams.push('repo_fingerprint=' + encodeURIComponent(cleanRepoFingerprint));
+                    }
+                    if (deepLinkParams.length > 0) {
+                        deepLink += '?' + deepLinkParams.join('&');
+                    }
+
                     console.log('Deep Link:', deepLink);
                     console.log('Package ID:', cleanPackageId);
                     if (cleanRepoAddress) {
                         console.log('Repo Address:', cleanRepoAddress);
                     }
+                    if (cleanRepoFingerprint) {
+                        console.log('Repo Fingerprint:', cleanRepoFingerprint);
+                    }
 
-                    // Ù…Ø­Ø§ÙˆÙ„Ø© ÙØªØ­ Ø§Ù„ØªØ·Ø¨ÙŠÙ‚
-                    // Ù†Ø³ØªØ®Ø¯Ù… window.location.href Ù„Ù„ØªØ­ÙˆÙŠÙ„
                     window.location.href = deepLink;
 
-                    // Fallback: Ø¨Ø¹Ø¯ 2 Ø«Ø§Ù†ÙŠØ©ØŒ Ø¥Ø°Ø§ Ù„Ù… ÙŠØªÙ… ÙØªØ­ Ø§Ù„ØªØ·Ø¨ÙŠÙ‚ØŒ Ø¹Ø±Ø¶ Ø±Ø§Ø¨Ø· Google Play
                     let hasNavigated = false;
 
-                    // Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† Ø±Ø¬ÙˆØ¹ Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… (ÙÙŠ Ø¨Ø¹Ø¶ Ø§Ù„Ù…ØªØµÙØ­Ø§Øª)
                     window.addEventListener('blur', function() {
                         hasNavigated = true;
                     });
 
-                    // Ø¨Ø¹Ø¯ 2 Ø«Ø§Ù†ÙŠØ©ØŒ Ø¹Ø±Ø¶ Ø±Ø§Ø¨Ø· Google Play ÙƒØ¨Ø¯ÙŠÙ„
                     setTimeout(function() {
                         if (!hasNavigated) {
                             showPlayStoreFallback(cleanPackageId, cleanRepoAddress);
                         }
                     }, 2000);
 
-                } catch (error) {
+                }
+            } catch (error) {
                     console.error('Error during redirect:', error);
                     showError(
                         'Ø­Ø¯Ø« Ø®Ø·Ø£ ØºÙŠØ± Ù…ØªÙˆÙ‚Ø¹. ÙŠØ±Ø¬Ù‰ Ø§Ù„Ù…Ø­Ø§ÙˆÙ„Ø© Ù…Ø±Ø© Ø£Ø®Ø±Ù‰.',
